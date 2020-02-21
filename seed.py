@@ -1,7 +1,7 @@
 """Utility file to seed ratings database from MovieLens data in seed_data/"""
 
 from sqlalchemy import func
-from model import User
+from model import User, Movie, Rating
 # from model import Rating
 # from model import Movie
 
@@ -19,10 +19,14 @@ def load_users():
     User.query.delete()
 
     # Read u.user file and insert data
+    # open the file
     for row in open("seed_data/u.user"):
+        # parse a line
         row = row.rstrip()
+        # parse the line futher by spliting the line by fields/catagory
         user_id, age, gender, occupation, zipcode = row.split("|")
 
+        # created an object
         user = User(user_id=user_id,
                     age=age,
                     zipcode=zipcode)
@@ -36,6 +40,25 @@ def load_users():
 
 def load_movies():
     """Load movies from u.item into database."""
+    print('Movies')
+
+    User.query.delete()
+
+    for row in open("seed_data/u.item"):
+        row = row.strip().split('|')
+        new_row = row[0:5]
+
+        movie_id, title, released_at, blank_space, imdb_url = new_row
+
+        title = title.split("(")
+        print(title)
+
+    #     movie = Movie(movie_id=movie_id, title=title, released_at=released_at,
+    #                   imdb_url=imdb_url)
+
+    #     db.session.add(movie)
+
+    # db.session.commit()
 
 
 def load_ratings():
@@ -58,11 +81,11 @@ def set_val_user_id():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # In case tables haven't been created, create them
-    db.create_all()
+    # # In case tables haven't been created, create them
+    #db.create_all()
 
-    # Import different types of data
-    load_users()
-    load_movies()
-    load_ratings()
-    set_val_user_id()
+    # # Import different types of data
+    # load_users()
+    # load_movies()
+    # load_ratings()
+    # set_val_user_id()
