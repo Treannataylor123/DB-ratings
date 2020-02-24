@@ -43,7 +43,7 @@ def load_movies():
     """Load movies from u.item into database."""
     print('Movies')
 
-    User.query.delete()
+    Movie.query.delete()
 
     for row in open("seed_data/u.item"):
         row = row.strip().split('|')
@@ -54,7 +54,7 @@ def load_movies():
         title = title[0:-7]
         # title = title.split("(")
         # title = title[0]
-        print(title)
+        # print(title)
 
         format = "%d-%b-%Y"
         date = datetime.strptime(released_at, format)
@@ -70,6 +70,19 @@ def load_movies():
 
 def load_ratings():
     """Load ratings from u.data into database."""
+    print('Load')
+
+    Rating.query.delete()
+
+    for row in open("seed_data/u.data"):
+        user_id, movie_id, score, timestamp = row.rstrip().split()
+
+        rating = Rating(movie_id=movie_id, user_id=user_id,
+                        score=score)
+
+        db.session.add(rating)
+
+    db.session.commit()
 
 
 def set_val_user_id():
@@ -95,5 +108,5 @@ if __name__ == "__main__":
     # Import different types of data
     load_users()
     load_movies()
-    #load_ratings()
-    #set_val_user_id()
+    load_ratings()
+    set_val_user_id()
