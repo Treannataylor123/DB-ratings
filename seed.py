@@ -54,7 +54,7 @@ def load_movies():
         title = title[0:-7]
         # title = title.split("(")
         # title = title[0]
-        #print(title)
+        print(title)
 
         format = "%d-%b-%Y"
         date = datetime.strptime(released_at, format)
@@ -89,11 +89,11 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # # # In case tables haven't been created, create them
-    db.delete()
+    db.drop_all()
     db.create_all()
 
     # Import different types of data
     load_users()
     load_movies()
-    load_ratings()
-    set_val_user_id()
+    #load_ratings()
+    #set_val_user_id()
