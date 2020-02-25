@@ -25,9 +25,30 @@ def index():
     return render_template('homepage.html')
 
 
+@app.route("/login")
+def register_form():
+
+    return render_template("registration.html")
+
+
+@app.route("/register", methods=["POST"])
+def register_process():
+    user_email = request.args.get("email")
+    email = User.query.filter_by(email=user_email)
+
+    if email is None:
+        return render_template('')
+    else:
+        flash('Logged in')
+        return redirect('/')
+
+    
+
+
 @app.route('/users')
 def get_users():
     users = User.query.all()
+
     return render_template('user_list.html', users=users)
 
 
