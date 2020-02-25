@@ -25,24 +25,26 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route("/login")
+@app.route("/register")
 def register_form():
 
     return render_template("registration.html")
 
 
+
 @app.route("/register", methods=["POST"])
 def register_process():
-    user_email = request.args.get("email")
+    user_email = request.form.get("email")
+    password = request.form.get("password")
     email = User.query.filter_by(email=user_email)
+    flash(email)
 
     if email is None:
+        new_user = User(email=email, password=password)
+        db.session.add(new_user)
         return render_template('')
     else:
-        flash('Logged in')
-        return redirect('/')
-
-    
+        return redirect('/login')
 
 
 @app.route('/users')
